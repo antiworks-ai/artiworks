@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/antiworks-ai/artiworks/schema.json",
+  "properties": {
+    "models": {
+      "properties": {
+        "default": {
+          "type": "string"
+        },
+        "list": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "default"
+      ]
+    },
+    "providers": {
+      "additionalProperties": {
+        "properties": {
+          "api_key": {
+            "type": "string"
+          },
+          "base_url": {
+            "type": "string"
+          },
+          "models": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_key"
+        ]
+      },
+      "type": "object"
+    },
+    "agent": {
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "max_tokens": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "engine",
+        "max_tokens"
+      ]
+    },
+    "middleware": {
+      "properties": {
+        "paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "paths"
+      ]
+    },
+    "cleaners": {
+      "additionalProperties": {
+        "properties": {
+          "strategy": {
+            "type": "string"
+          },
+          "max_lines": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "strategy"
+        ]
+      },
+      "type": "object"
+    },
+    "session": {
+      "properties": {
+        "storage": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "storage",
+        "path"
+      ]
+    },
+    "hooks": {
+      "additionalProperties": {
+        "items": {
+          "properties": {
+            "matcher": {
+              "type": "string"
+            },
+            "command": {
+              "type": "string"
+            },
+            "timeout": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "matcher",
+            "command",
+            "timeout"
+          ]
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "skills": {
+      "properties": {
+        "paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "paths"
+      ]
+    },
+    "lsp": {
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "auto_discover": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "enabled",
+        "auto_discover"
+      ]
+    },
+    "permissions": {
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "allowlist": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "mode"
+      ]
+    },
+    "tracing": {
+      "properties": {
+        "provider": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "provider"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "models",
+    "providers",
+    "agent",
+    "middleware",
+    "cleaners",
+    "session",
+    "skills",
+    "lsp",
+    "permissions",
+    "tracing"
+  ],
+  "title": "artiworks config schema",
+  "description": "Schema for $ARTIWORKS_HOME/config.toml and .artiworks/config.toml"
+}

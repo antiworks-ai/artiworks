@@ -1,0 +1,24 @@
+# Binaries
+/artiworks
+/tmp/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Artiworks runtime
+.artiworks/
+.env
+*.log
+
+logs/
+.tmp/
+
+# Agent files
+.agents/
+skills-lock.json

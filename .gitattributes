@@ -1,0 +1,36 @@
+# -*- mode: conf-unix -*-
+
+# ── Default ──────────────────────────────────────────────────────────
+* text=auto eol=lf
+
+# ── Go ───────────────────────────────────────────────────────────────
+*.go          text eol=lf diff=golang
+go.mod        text eol=lf
+go.sum        text eol=lf
+go.work       text eol=lf
+go.work.sum   text eol=lf
+
+# ── Generated ────────────────────────────────────────────────────────
+schema.json   linguist-generated=true
+coverage.out  linguist-generated=true
+coverage.html linguist-generated=true
+*.pb.go       linguist-generated=true
+
+# ── Vendor / Third-party ─────────────────────────────────────────────
+vendor/       linguist-vendored
+
+# ── Config / Data ────────────────────────────────────────────────────
+*.toml        text eol=lf
+*.json        text eol=lf
+*.yaml        text eol=lf
+*.yml         text eol=lf
+
+# ── Shell / Scripts ──────────────────────────────────────────────────
+Makefile      text eol=lf
+*.sh          text eol=lf
+*.bash        text eol=lf
+*.zsh         text eol=lf
+
+# ── Docs ─────────────────────────────────────────────────────────────
+*.md          text eol=lf linguist-documentation
+*.mdx         text eol=lf linguist-documentation

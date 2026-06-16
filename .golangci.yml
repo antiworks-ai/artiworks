@@ -1,0 +1,77 @@
+# artiworks golangci-lint configuration — source of truth for Go code quality.
+# 31 linters + 3 formatters. Inspired by github.com/samber/cc-skills-golang.
+
+version: "2"
+
+linters:
+  enable:
+    - bodyclose
+    - copyloopvar
+    - err113
+    - errchkjson
+    - errname
+    - errorlint
+    - exhaustive
+    - gocheckcompilerdirectives
+    - gocritic
+    - gosec
+    - govet
+    - ineffassign
+    - intrange
+    - misspell
+    - nakedret
+    - nilerr
+    - noctx
+    - nolintlint
+    - perfsprint
+    - prealloc
+    - predeclared
+    - reassign
+    - revive
+    - staticcheck
+    - testifylint
+    - unconvert
+    - unparam
+    - unused
+    - usetesting
+    - whitespace
+
+  settings:
+    revive:
+      rules:
+        - name: exported
+        - name: context-as-argument
+        - name: error-return
+        - name: error-strings
+        - name: receiver-naming
+        - name: indent-error-flow
+        - name: superfluous-else
+        - name: unused-parameter
+
+  exclusions:
+    generated: lax
+    rules:
+      - linters: [err113]
+        text: "do not define dynamic errors"
+      - path: _test\.go
+        linters: [err113, gosec, noctx, funlen, lll]
+      - path: cmd/
+        linters: [forbidgo]
+
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+
+  settings:
+    gofumpt:
+      extra-rules: true
+    goimports:
+      local-prefixes:
+        - github.com/antiworks-ai/artiworks
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  new: false

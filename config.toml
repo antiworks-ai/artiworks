@@ -1,0 +1,28 @@
+# artiworks configuration
+#:schema https://raw.githubusercontent.com/antiworks-ai/artiworks/main/schema.json
+
+[models]
+default = "openai/gpt-4o"
+
+[providers.openai]
+api_key = "$OPENAI_API_KEY"
+# base_url = "https://api.openai.com/v1"  # default, uncomment to override
+models = ["gpt-4o", "gpt-4o-mini"]
+
+# [providers.deepseek]
+# api_key = "$DEEPSEEK_API_KEY"
+# base_url = "https://api.deepseek.com"
+# models = ["deepseek-v4-pro", "deepseek-v4-flash"]
+
+[middleware]
+paths = [".artiworks/middleware/", "$ARTIWORKS_HOME/middleware/"]
+
+[cleaners.grep]
+strategy = "stats"
+
+[cleaners.test]
+strategy = "failure_focus"
+
+[session]
+storage = "sqlite"
+path = "$ARTIWORKS_HOME/artiworks.db"
