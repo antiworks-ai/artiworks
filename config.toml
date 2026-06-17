@@ -2,17 +2,62 @@
 #:schema https://raw.githubusercontent.com/antiworks-ai/artiworks/main/schema.json
 
 [models]
-default = "openai/gpt-4o"
+default = "default-chat"
+
+[models.aliases.default-chat]
+provider = "openai"
+name = "gpt-4o"
+
+[models.aliases.deepseek-chat]
+provider = "deepseek"
+name = "deepseek-chat"
 
 [providers.openai]
-api_key = "$OPENAI_API_KEY"
+type = "openai"
+api = "auto"
+api_key_env = "OPENAI_API_KEY"
 # base_url = "https://api.openai.com/v1"  # default, uncomment to override
 models = ["gpt-4o", "gpt-4o-mini"]
 
 # [providers.deepseek]
-# api_key = "$DEEPSEEK_API_KEY"
-# base_url = "https://api.deepseek.com"
-# models = ["deepseek-v4-pro", "deepseek-v4-flash"]
+# type = "openai-compatible"
+# api = "chat_completions"
+# api_key_env = "DEEPSEEK_API_KEY"
+# base_url = "https://api.deepseek.com/v1"
+# models = ["deepseek-chat", "deepseek-reasoner"]
+
+[harness]
+max_steps = 12
+max_tool_calls = 32
+timeout = "10m"
+
+[harness.token]
+enabled = true
+soft_compact_ratio = 0.5
+compact_ratio = 0.8
+compact_force_ratio = 0.9
+
+[harness.token.cleaners.tool_output]
+default = "failure_focus"
+max_bytes = 65536
+
+[harness.token.cleaners.shell]
+strategy = "failure_focus"
+max_lines = 200
+
+[harness.token.cleaners.grep]
+strategy = "dedup"
+max_lines = 300
+
+[harness.cache]
+enabled = true
+strategy = "stable_prefix"
+
+[harness.cache.stable_prefix]
+include_tools = true
+include_project_memory = true
+deterministic_serialization = true
+forbid_volatile_fields = true
 
 [middleware]
 paths = [".artiworks/middleware/", "$ARTIWORKS_HOME/middleware/"]
@@ -26,3 +71,6 @@ strategy = "failure_focus"
 [session]
 storage = "sqlite"
 path = "$ARTIWORKS_HOME/artiworks.db"
+
+[observability]
+enabled = true

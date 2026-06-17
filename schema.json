@@ -2,10 +2,157 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/antiworks-ai/artiworks/schema.json",
   "properties": {
+    "server": {
+      "properties": {
+        "addr": {
+          "type": "string"
+        },
+        "api": {
+          "properties": {
+            "native": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "prefix": {
+                  "type": "string"
+                },
+                "streaming": {
+                  "properties": {
+                    "transport": {
+                      "type": "string"
+                    },
+                    "resume": {
+                      "type": "boolean"
+                    },
+                    "heartbeat_interval": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "resume"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "enabled"
+              ]
+            },
+            "openai": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "prefix": {
+                  "type": "string"
+                },
+                "mode": {
+                  "type": "string"
+                },
+                "compatibility": {
+                  "type": "string"
+                },
+                "endpoints": {
+                  "properties": {
+                    "models": {
+                      "type": "boolean"
+                    },
+                    "chat_completions": {
+                      "type": "boolean"
+                    },
+                    "responses": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "models",
+                    "chat_completions",
+                    "responses"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "enabled"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        "auth": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "type": {
+              "type": "string"
+            },
+            "tenant_header": {
+              "type": "string"
+            },
+            "project_header": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        },
+        "idempotency": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "header": {
+              "type": "string"
+            },
+            "ttl": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "models": {
       "properties": {
         "default": {
           "type": "string"
+        },
+        "aliases": {
+          "additionalProperties": {
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "provider",
+              "name"
+            ]
+          },
+          "type": "object"
         },
         "list": {
           "items": {
@@ -23,7 +170,16 @@
     "providers": {
       "additionalProperties": {
         "properties": {
+          "type": {
+            "type": "string"
+          },
+          "api": {
+            "type": "string"
+          },
           "api_key": {
+            "type": "string"
+          },
+          "api_key_env": {
             "type": "string"
           },
           "base_url": {
@@ -34,13 +190,46 @@
               "type": "string"
             },
             "type": "array"
+          },
+          "credentials": {
+            "properties": {
+              "api_key": {
+                "properties": {
+                  "ref": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "ref"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "extra": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "api_key"
-        ]
+        "type": "object"
       },
       "type": "object"
     },
@@ -59,6 +248,198 @@
         "engine",
         "max_tokens"
       ]
+    },
+    "harness": {
+      "properties": {
+        "max_steps": {
+          "type": "integer"
+        },
+        "max_tool_calls": {
+          "type": "integer"
+        },
+        "timeout": {
+          "type": "string"
+        },
+        "assembly": {
+          "properties": {
+            "history": {
+              "properties": {
+                "strategy": {
+                  "type": "string"
+                },
+                "max_messages": {
+                  "type": "integer"
+                },
+                "summarize": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "summarize"
+              ]
+            },
+            "memory": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "inject_as": {
+                  "type": "string"
+                },
+                "max_tokens": {
+                  "type": "integer"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "enabled"
+              ]
+            },
+            "on_unsupported": {
+              "properties": {
+                "thinking": {
+                  "type": "string"
+                },
+                "image_input": {
+                  "type": "string"
+                },
+                "structured_output": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object"
+        },
+        "token": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "soft_compact_ratio": {
+              "type": "number"
+            },
+            "compact_ratio": {
+              "type": "number"
+            },
+            "compact_force_ratio": {
+              "type": "number"
+            },
+            "cleaners": {
+              "properties": {
+                "tool_output": {
+                  "properties": {
+                    "strategy": {
+                      "type": "string"
+                    },
+                    "default": {
+                      "type": "string"
+                    },
+                    "max_lines": {
+                      "type": "integer"
+                    },
+                    "max_bytes": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object"
+                },
+                "shell": {
+                  "properties": {
+                    "strategy": {
+                      "type": "string"
+                    },
+                    "default": {
+                      "type": "string"
+                    },
+                    "max_lines": {
+                      "type": "integer"
+                    },
+                    "max_bytes": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object"
+                },
+                "grep": {
+                  "properties": {
+                    "strategy": {
+                      "type": "string"
+                    },
+                    "default": {
+                      "type": "string"
+                    },
+                    "max_lines": {
+                      "type": "integer"
+                    },
+                    "max_bytes": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "type": "object"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        },
+        "cache": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "strategy": {
+              "type": "string"
+            },
+            "stable_prefix": {
+              "properties": {
+                "include_tools": {
+                  "type": "boolean"
+                },
+                "include_project_memory": {
+                  "type": "boolean"
+                },
+                "deterministic_serialization": {
+                  "type": "boolean"
+                },
+                "forbid_volatile_fields": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "include_tools",
+                "include_project_memory",
+                "deterministic_serialization",
+                "forbid_volatile_fields"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     },
     "middleware": {
       "properties": {
@@ -81,15 +462,18 @@
           "strategy": {
             "type": "string"
           },
+          "default": {
+            "type": "string"
+          },
           "max_lines": {
+            "type": "integer"
+          },
+          "max_bytes": {
             "type": "integer"
           }
         },
         "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "strategy"
-        ]
+        "type": "object"
       },
       "type": "object"
     },
@@ -182,6 +566,95 @@
       "type": "object",
       "required": [
         "mode"
+      ]
+    },
+    "observability": {
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "logging": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "level": {
+              "type": "string"
+            },
+            "format": {
+              "type": "string"
+            },
+            "include_content": {
+              "type": "boolean"
+            },
+            "redact": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled",
+            "include_content",
+            "redact"
+          ]
+        },
+        "metrics": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        },
+        "tracing": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "provider": {
+              "type": "string"
+            },
+            "exporter": {
+              "type": "string"
+            },
+            "endpoint": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        },
+        "profiling": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "addr": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "enabled"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "enabled"
       ]
     },
     "tracing": {
