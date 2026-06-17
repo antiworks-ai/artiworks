@@ -86,7 +86,7 @@ OpenAI-compatible inbound APIs and outbound provider protocols are independent. 
 
 Token cleaning and cache-hit optimization are harness responsibilities. The runtime should preserve raw tool output in events/artifacts, pass cleaned or referenced content to the model, and protect a stable prompt prefix whenever possible.
 
-## Target Project Structure
+## Project Structure
 
 ```text
 artiworks/
@@ -125,7 +125,7 @@ Package meanings are strict:
 
 ## Design Notes
 
-Current design notes live under `.tmp/`, especially `.tmp/DESIGN.md` and `.tmp/INTRO.md`.
+The v1 design entry point is [docs/artiworks-design-v1.md](./docs/artiworks-design-v1.md). The design is split into smaller files under [docs/design/v1](./docs/design/v1/) for a future VitePress site.
 
 ## License
 

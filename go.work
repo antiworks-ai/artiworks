@@ -1,9 +1,0 @@
-go 1.26
-
-use (
-	./app
-	./harness/adapters/eino
-	./harness/adapters/trpc
-	./harness/api
-	./harness/core
-)

@@ -12,11 +12,11 @@ LDFLAGS := -ldflags "-X main.Version=$(VERSION)"
 .PHONY: build dev test clean schema tools install-skills lint lint-fix fmt vet audit outdated install deps-update help
 
 build: ## Build CLI binary
-	@$(GO) build $(GOFLAGS) $(LDFLAGS) -o $(BINARY) ./app/cmd/artiworks
+	@$(GO) build $(GOFLAGS) $(LDFLAGS) -o $(BINARY) ./cmd/artiworks
 	@echo "✅ $(BINARY) $(VERSION)"
 
 dev: ## Build and run
-	@$(GO) run ./app/cmd/artiworks
+	@$(GO) run ./cmd/artiworks
 
 test: ## Run all tests with race detector + coverage
 	@$(GO) test -v -race -coverprofile=coverage.out ./...
@@ -26,7 +26,7 @@ clean: ## Remove build artifacts (cross-platform)
 	@$(GO) run scripts/clean.go && echo "✅ cleaned"
 
 schema: ## Regenerate JSON Schema from Go types
-	@$(GO) generate ./harness/api/...
+	@$(GO) generate ./pkg/artiworks/config
 	@echo "✅ schema.json"
 
 # ── Tools ────────────────────────────────────────────────
