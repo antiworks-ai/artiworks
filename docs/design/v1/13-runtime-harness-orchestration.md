@@ -34,6 +34,12 @@ model step
       no  -> finish run
 ```
 
+Runtime loop state is copied as isolated canonical snapshots. Provider-step
+requests, loop messages, memory hits, tool specs, tool-call arguments,
+tool-result payloads, errors, metadata, and approval checkpoint messages must
+not share mutable nested maps, slices, pointers, or message parts with
+caller-owned input.
+
 Hard limits:
 
 ```yaml
@@ -52,4 +58,3 @@ concurrent producers -> sequencer -> reducer.Apply -> persistence -> sinks
 Reducer application is serial.
 
 ---
-

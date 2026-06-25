@@ -36,6 +36,7 @@ Security:
 - Webhooks need timeout, retry limits, and payload size limits.
 - Hook payloads must be redacted.
 - Hook failures do not block main flow unless `critical: true`.
+- Matched hook attempts write `hook.executed` or `hook.failed` audit records
+  through the app audit store without exposing hook payload content.
 
 ---
-

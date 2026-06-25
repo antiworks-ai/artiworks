@@ -15,7 +15,7 @@ const (
 	// File names.
 	ConfigFile     = "config.toml"
 	SchemaFile     = "schema.json"
-	SchemaURL      = "https://github.com/antiworks-ai/artiworks/schema.json"
+	SchemaURL      = "https://github.com/artiworks-ai/artiworks/schema.json"
 	DBFile         = "artiworks.db"
 	ExtensionsFile = "extensions.json"
 

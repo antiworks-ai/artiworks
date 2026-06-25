@@ -16,7 +16,7 @@ Node is only needed for development tasks that install agent skills through `npx
 ## Quick Start
 
 ```bash
-git clone https://github.com/antiworks-ai/artiworks.git
+git clone https://github.com/artiworks-ai/artiworks.git
 cd artiworks
 
 make tools

@@ -107,20 +107,22 @@ middleware:
       - redact.thinking
 
 persistence:
-  type: sqlite
-  path: ~/.artiworks/artiworks.db
+  # Current productized local backends: file, memory.
+  # SQLite remains a future backend behind the same persistence contract.
+  type: file
+  path: ~/.artiworks/persistence
   event_log:
     enabled: true
-    mode: compact
   snapshots:
     enabled: true
     on_run_completed: true
-  artifacts:
-    type: fs
-    path: ~/.artiworks/artifacts
 
 memory:
   enabled: true
+  # Supported local stores: memory, persistence, file.
+  # `persistence` and `file` write current-state JSON under
+  # persistence.path/memory/items.json.
+  store: persistence
   retrieval:
     top_k: 8
     min_score: 0.35
@@ -136,12 +138,31 @@ tools:
     builtin:
       type: builtin
       enabled: true
+    local:
+      type: local
+      enabled: true
+      allowed_commands:
+        - git
+        - rg
+      allowed_roots:
+        - ~/.artiworks
+      timeout: 5s
+      max_output_bytes: 65536
     mcp:
       type: mcp
       enabled: true
+      command: npx
+      args:
+        - -y
+        - @modelcontextprotocol/server-filesystem
+      env:
+        - MCP_LOG_LEVEL=error
     openapi:
       type: openapi
-      enabled: false
+      enabled: true
+      base_url: https://api.example.test
+      spec_path: ./openapi.json
+      timeout: 5s
 
 hooks: {}
 
@@ -175,17 +196,58 @@ observability:
     enabled: false
   profiling:
     enabled: false
+    addr: 127.0.0.1:6060
 
 audit:
   enabled: true
+  # Supported local stores: memory, persistence, file.
+  # `persistence` and `file` append JSONL to
+  # <persistence.path>/audit/records.jsonl.
+  # Empty store keeps the compatibility default in-memory audit store.
   store: persistence
   include_content: false
 
 control:
   enabled: true
+  presence:
+    enabled: true
+    heartbeat_interval: 10s
+  local:
+    enabled: true
+    transport: unix
+    socket_path: ~/.artiworks/run/artiworks.sock
+  relay:
+    enabled: false
+    endpoint: ""
+    token_env: ARTIWORKS_RELAY_TOKEN
+  expose:
+    process: true
+    active_runs: true
+    event_tail: true
+    content: redacted
 ```
 
 The config implementation lives in `pkg/artiworks/config`.
 
----
+When `secrets.providers.file.allowed_roots` is empty, `file:` refs keep the
+compatibility default behavior. Once roots are present, only files that resolve
+inside those roots are accepted. `artiworks status` uses the same local secret
+resolution path as runtime wiring: it does not contact providers, but it fails
+if configured provider credentials cannot be resolved locally.
 
+When `memory.store` is omitted, Artiworks keeps the compatibility default
+in-memory store. File-backed memory requires `persistence.path`; `propose` mode
+returns proposed memories without persisting them or requesting approval.
+`write` and `forget` modes require permission authorization before persistence.
+
+Tool adapters currently ship with concrete `builtin`, `local`, `mcp`, and
+`openapi` providers. `local` exposes allowlisted `shell.exec`, `fs.read`, and
+`fs.write` tools; `mcp` discovers tools through a stdio MCP server; `openapi`
+registers one tool per operation ID from a local OpenAPI v3 JSON spec.
+
+When `control.local.transport = "unix"` and `socket_path` is set, `artiworks
+serve` listens on that Unix socket unless `--addr` overrides it. Relay, IM, and
+other external control surfaces stay behind explicit future contracts; enabling
+`control.relay` currently fails fast instead of silently doing nothing.
+
+---

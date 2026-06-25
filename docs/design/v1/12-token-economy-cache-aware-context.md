@@ -25,6 +25,12 @@ Cleaning and pruning rules:
 
 - Raw content remains in the event log or artifact store.
 - The model receives a cleaned, compacted, or reference-only view.
+- Cleaned and pruned model-facing views are deep-cloned from canonical input so
+  downstream mutation cannot alter persisted messages, tool results, errors,
+  metadata, or tool-call arguments.
+- `head_tail` cleaning uses byte-budget metadata but clamps slice boundaries to
+  valid UTF-8 rune boundaries so model-facing text is never corrupted by
+  multibyte content.
 - Current user input is not cleaned by default.
 - System, developer, and policy instructions are not cleaned by default.
 - Cleaning emits warnings such as `tool_output_cleaned`, `tool_output_truncated`, and `artifact_referenced_only`.
@@ -73,5 +79,10 @@ CachePlan:
 
 This design intentionally follows the lesson from Reasonix: cache locality is part of agent quality. Aggressive summarization can reduce token count while making every following turn more expensive and less predictable.
 
----
+Durable project memory may be backed by the local file memory store when
+`memory.store` is `persistence` or `file`. The store writes current-state JSON
+under `persistence.path/memory/items.json` so forgotten memory content is not
+kept in an append-only replay log. Retrieval order and scoring stay the same as
+the in-memory store.
 
+---

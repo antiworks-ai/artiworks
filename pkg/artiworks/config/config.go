@@ -1,6 +1,6 @@
 // Package config defines configuration types and schema generation inputs.
 //
-//go:generate sh -c "go run ../../../tools/schema > ../../../schema.json"
+//go:generate go run ../../../tools/schema --all --out ../../..
 package config
 
 // =========================================================================

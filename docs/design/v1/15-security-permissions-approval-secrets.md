@@ -84,7 +84,12 @@ keychain:artiworks/openai
 vault:path/to/secret#field
 ```
 
-MVP supports `env` and `file`.
+Current local secret resolution supports `env` and `file`. `keychain` and
+`vault` remain reserved reference forms for future secret-provider backends.
+
+For product use, `file` refs are constrained by
+`secrets.providers.file.allowed_roots` when configured. Empty roots preserve
+the compatibility default, but configured roots must contain the resolved file
+path after canonicalization and symlink resolution.
 
 ---
-

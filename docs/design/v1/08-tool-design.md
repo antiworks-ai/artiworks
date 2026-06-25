@@ -27,5 +27,14 @@ Tool business failure returns `ToolResult.Error`. Infrastructure failure returns
 
 Permissions and approval are not executor decisions. They are harness/security decisions.
 
----
+Concrete provider status:
 
+- `builtin`: side-effect-free local runtime helpers such as `time.now`.
+- `local`: allowlisted `shell.exec`, `fs.read`, and `fs.write`; commands are
+  executed without a shell and file paths must stay inside configured roots.
+- `openapi`: local OpenAPI v3 JSON specs register one HTTP tool per
+  `operationId` and bind path/query/header/body arguments.
+- `mcp`: stdio MCP servers are initialized, listed, and called through JSON-RPC;
+  discovered tools are namespaced by provider name.
+
+---

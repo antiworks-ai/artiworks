@@ -6,7 +6,7 @@ import (
 
 	"github.com/invopop/jsonschema"
 
-	"github.com/antiworks-ai/artiworks/pkg/artiworks/config"
+	"github.com/artiworks-ai/artiworks/pkg/artiworks/config"
 )
 
 func TestConfigSchemaIncludesCanonicalProviderAndHarnessConfig(t *testing.T) {

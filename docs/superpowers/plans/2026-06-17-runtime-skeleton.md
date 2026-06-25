@@ -16,30 +16,30 @@
 - Already migrated: `pkg/artiworks/config/{config.go,constant.go,home.go,config_schema_test.go}`.
 - Already migrated: `tools/schema/main.go`.
 - Already established: `internal/*` adapter/app/infra hierarchy with `.gitkeep`.
-- Create next: `pkg/artiworks/api/runtime_types_test.go`.
-- Create next: `pkg/artiworks/api/runtime_types.go`.
-- Create next: `pkg/artiworks/core/state_test.go`.
-- Create next: `pkg/artiworks/core/state.go`.
-- Create next: `pkg/artiworks/harness/runner_test.go`.
-- Create next: `pkg/artiworks/harness/runner.go`.
+- Created: `pkg/artiworks/api/runtime_types_test.go`.
+- Created: `pkg/artiworks/api/runtime_types.go`.
+- Created: `pkg/artiworks/core/state_test.go`.
+- Created: `pkg/artiworks/core/state.go`.
+- Created: `pkg/artiworks/harness/runner_test.go`.
+- Created: `pkg/artiworks/harness/runner.go`.
 
 ---
 
 ### Task 0: Verify Layout Baseline
 
-- [ ] Run `find cmd pkg internal tools -name .gitkeep | sort`.
+- [x] Run `find cmd pkg internal tools -name .gitkeep | sort`.
 
 Expected: `.gitkeep` files exist for empty target directories.
 
-- [ ] Run `go test ./...`.
+- [x] Run `go test ./...`.
 
 Expected: PASS.
 
-- [ ] Run `go vet ./...`.
+- [x] Run `go vet ./...`.
 
 Expected: PASS.
 
-- [ ] Run `make schema`.
+- [x] Run `make schema`.
 
 Expected: PASS and `schema.json` remains generated from `pkg/artiworks/config`.
 
@@ -51,10 +51,10 @@ Expected: PASS and `schema.json` remains generated from `pkg/artiworks/config`.
 - Create: `pkg/artiworks/api/runtime_types_test.go`
 - Create: `pkg/artiworks/api/runtime_types.go`
 
-- [ ] Write failing tests for `MessagePart`, `RunRequest`, and `Usage` contracts.
-- [ ] Run `go test ./pkg/artiworks/api` and confirm RED with undefined symbols.
-- [ ] Implement the minimal canonical DTOs.
-- [ ] Run `go test ./pkg/artiworks/api` and confirm GREEN.
+- [x] Write failing tests for `MessagePart`, `RunRequest`, and `Usage` contracts.
+- [x] Run `go test ./pkg/artiworks/api` and confirm RED with undefined symbols.
+- [x] Implement the minimal canonical DTOs.
+- [x] Run `go test ./pkg/artiworks/api` and confirm GREEN.
 
 ---
 
@@ -64,10 +64,10 @@ Expected: PASS and `schema.json` remains generated from `pkg/artiworks/config`.
 - Create: `pkg/artiworks/core/state_test.go`
 - Create: `pkg/artiworks/core/state.go`
 
-- [ ] Write failing tests for run/message event projection and non-monotonic sequence rejection.
-- [ ] Run `go test ./pkg/artiworks/core` and confirm RED with undefined reducer symbols.
-- [ ] Implement `State`, `RunNode`, `MessageNode`, `ToolNode`, `Patch`, `Reducer`, `NewState`, `NewReducer`, and `Apply`.
-- [ ] Run `go test ./pkg/artiworks/core` and confirm GREEN.
+- [x] Write failing tests for run/message event projection and non-monotonic sequence rejection.
+- [x] Run `go test ./pkg/artiworks/core` and confirm RED with undefined reducer symbols.
+- [x] Implement `State`, `RunNode`, `MessageNode`, `ToolNode`, `Patch`, `Reducer`, `NewState`, `NewReducer`, and `Apply`.
+- [x] Run `go test ./pkg/artiworks/core` and confirm GREEN.
 
 ---
 
@@ -77,16 +77,27 @@ Expected: PASS and `schema.json` remains generated from `pkg/artiworks/config`.
 - Create: `pkg/artiworks/harness/runner_test.go`
 - Create: `pkg/artiworks/harness/runner.go`
 
-- [ ] Write failing tests for run middleware order and `PromptPlan` stable-prefix separation.
-- [ ] Run `go test ./pkg/artiworks/harness` and confirm RED with undefined harness symbols.
-- [ ] Implement `Runner`, `EventSink`, `RunHandler`, `RunMiddleware`, `EventHandler`, `EventMiddleware`, `MiddlewareContext`, `PromptPlan`, `CachePlan`, and `AssemblyWarning`.
-- [ ] Run `go test ./pkg/artiworks/harness` and confirm GREEN.
+- [x] Write failing tests for run middleware order and `PromptPlan` stable-prefix separation.
+- [x] Run `go test ./pkg/artiworks/harness` and confirm RED with undefined harness symbols.
+- [x] Implement `Runner`, `EventSink`, `RunHandler`, `RunMiddleware`, `EventHandler`, `EventMiddleware`, `MiddlewareContext`, `PromptPlan`, `CachePlan`, and `AssemblyWarning`.
+- [x] Run `go test ./pkg/artiworks/harness` and confirm GREEN.
 
 ---
 
 ### Task 4: Final Verification
 
-- [ ] Run `go test ./...`.
-- [ ] Run `go vet ./...`.
-- [ ] Run `make schema`.
-- [ ] Run GitNexus `detect_changes(scope: "all")`.
+- [x] Run `go test ./...`.
+- [x] Run `go vet ./...`.
+- [x] Run `make schema`.
+- [x] Run GitNexus `detect_changes(scope: "all")`.
+
+## Execution Notes
+
+- API RED: `go test ./pkg/artiworks/api` failed with undefined API DTO symbols.
+- API GREEN: `go test ./pkg/artiworks/api` passed.
+- Core RED: `go test ./pkg/artiworks/core` failed with undefined reducer symbols.
+- Core GREEN: `go test ./pkg/artiworks/core` passed.
+- Harness RED: `go test ./pkg/artiworks/harness` failed with undefined harness symbols.
+- Harness GREEN: `go test ./pkg/artiworks/harness` passed.
+- Final verification: `go test ./...`, `go vet ./...`, and `make schema` passed.
+- GitNexus `detect_changes(scope: "all")` returned no changes detected because the new Go files were still untracked when the tool ran.

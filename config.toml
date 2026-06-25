@@ -1,5 +1,5 @@
 # artiworks configuration
-#:schema https://raw.githubusercontent.com/antiworks-ai/artiworks/main/schema.json
+#:schema https://raw.githubusercontent.com/artiworks-ai/artiworks/main/schema.json
 
 [models]
 default = "default-chat"

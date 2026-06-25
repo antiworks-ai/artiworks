@@ -37,8 +37,9 @@ after_run:
 ```
 
 Default write mode should be `propose`, not automatic.
+`propose` is non-persistent and does not require approval; `write` and
+`forget` require permission authorization before they mutate the memory store.
 
 Memory injection must become `Instruction`, not a fake user message.
 
 ---
-

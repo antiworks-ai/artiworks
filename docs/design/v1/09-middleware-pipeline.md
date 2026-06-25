@@ -54,5 +54,9 @@ complete
 
 `drop` is event-only and must not drop terminal/must-deliver events except by privileged policy.
 
----
+Starlark execution is bound to the request `context.Context`: if the context is
+already canceled before middleware entry, Starlark is skipped; if the context is
+canceled while a `run(ctx)` or `event(ctx)` function is executing, the active
+Starlark thread is canceled and the context error is returned.
 
+---
